@@ -1,0 +1,9 @@
+pandas
+numpy
+folium
+streamlit-folium
+streamlit-aggrid==1.0.5
+streamlit-option-menu
+streamlit-shadcn-ui
+scikit-learn
+beautifulsoup4
