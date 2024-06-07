@@ -1,22 +1,9 @@
 import streamlit as st
 import pandas as pd
 from clustering import Clustering
+from favorites import Favorites
 
 my_data = Clustering()
-
-class Favorites:
-    def __init__(self):
-        self.favorites = pd.DataFrame(columns=['소재지도로명주소', '의료기관명', '연락처'])
-    
-    def add_favorites(self, hos):
-        hos_name = hos['의료기관명']
-        if hos_name not in self.favorites['의료기관명'].values:
-            self.favorites = pd.concat([self.favorites, hos], ignore_index=True)
-            st.write('즐겨찾기에 추가되었습니다.')
-        else:
-            st.write('이미 즐겨찾기에 추가된 병원입니다.')
-        return
-    
 my_favorites = Favorites()
 
 # 로그인 페이지

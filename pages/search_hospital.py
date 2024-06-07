@@ -180,11 +180,13 @@ def search_hospital():
         with col3:                
             st.page_link('pages/reserve.py', label="예약하기")
         with col4:
-            st.page_link('pages/favorites.py', label="즐겨찾기에 추가하기")
+            st.page_link('pages/bookmark.py', label="즐겨찾기에 추가하기")
 
 
     except:
         pass
 
-
-search_hospital()
+try:
+    search_hospital()
+except:
+    st.error("병원을 찾는 도중 오류가 발생했습니다. 새로고침을 눌러주세요.")
