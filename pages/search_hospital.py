@@ -178,7 +178,7 @@ def search_hospital():
             st.link_button("네이버에서 확인하기(PC)",
                         "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" + encoded_text_pc)
         with col3:                
-            st.page_link('pages/reserve.py', label="예약하기")
+            st.page_link('pages/reservation.py', label="예약하기")
         with col4:
             st.page_link('pages/bookmark.py', label="즐겨찾기에 추가하기")
 

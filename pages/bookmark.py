@@ -38,6 +38,6 @@ try:
     if not selected_hos.empty and (st.session_state.get('selected_hos') is None or not st.session_state.get('selected_hos').equals(selected_hos)):
         st.session_state['selected_hos'] = selected_hos
 
-    st.page_link('pages/reserve.py', label="예약하기")
+    st.page_link('pages/reservation.py', label="예약하기")
 except:
     pass

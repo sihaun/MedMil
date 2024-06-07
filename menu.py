@@ -6,7 +6,7 @@ def authenticated_menu():
     #st.sidebar.page_link("info.py", label="계정 정보") # 사용자 정보 페이지로 이동
     st.sidebar.page_link("pages\\news.py", label="건강 정보") # 사용자 정보 페이지로 이동
     st.sidebar.page_link("pages\\search_hospital.py", label="병원 검색") # 메인 페이지로 이동
-    st.sidebar.page_link("pages\\reserve.py", label="예약하기") # 예약 페이지로 이동
+    st.sidebar.page_link("pages\\reservation.py", label="예약하기") # 예약 페이지로 이동
     st.sidebar.page_link("pages\\bookmark.py", label="즐겨찾기") # 즐겨찾기 페이지로 이동
     
     # 관리자 및 슈퍼 관리자 역할에 대한 추가 링크 표시
