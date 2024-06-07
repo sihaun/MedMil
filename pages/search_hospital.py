@@ -8,6 +8,7 @@ import folium
 from streamlit_folium import st_folium
 from st_aggrid import AgGrid, GridOptionsBuilder
 from menu import menu_with_redirect
+<<<<<<< HEAD
 from login import my_data
 
 menu_with_redirect()
@@ -15,6 +16,17 @@ menu_with_redirect()
 # 병원 데이터 다운로드
 army_data_path = path + "/pages/Army_Unit.csv"
 hos_data_path = path + "/pages/Hospital.csv"
+=======
+from login import my_data, my_favorites
+from advertise import advertise
+
+
+menu_with_redirect()
+advertise()
+# 병원 데이터 다운로드
+army_data_path = path + "\\pages\\Army_Unit.csv"
+hos_data_path = path + "\\pages\\Hospital.csv"
+>>>>>>> 06.07
 @st.cache_data
 def load_hospital_data(hos_data_path):
     gangwon_hos = pd.read_csv(hos_data_path, encoding='cp949')
@@ -41,7 +53,10 @@ def matching(centers, army_path, index):
 
     # 매칭 결과
     matched_centers = np.argmin(distances, axis=1)[0]
+<<<<<<< HEAD
     print(matched_centers)
+=======
+>>>>>>> 06.07
     
     # 선택한 군부대와 가장 가까운 병원 군집 중심 좌표 반환
     closest_hospital_centers = hospital_centers[matched_centers]
@@ -72,6 +87,11 @@ k_hospital=[4, 5, 5, 5, 3, 3, 5, 5] # 각 병원 종류별 클러스터 수
 st.write("### 병원 검색")
 
 army_label = army_data['보병사단'] # 군부대 이름 리스트
+<<<<<<< HEAD
+=======
+plot_label = ['보건소계열', '치과', '일반병원', '한의원/한방병원', '정신병원', '요양병원', '종합병원', '약국']
+plot_color = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige']
+>>>>>>> 06.07
 
 def search_hospital():
     # 현 군부대 위치 선택
@@ -91,10 +111,16 @@ def search_hospital():
     gangwon_hos['거리(km)'] = haversine(latitude, longitude, gangwon_hos.위도, gangwon_hos.경도).round(2)
 
     # 결과를 CSV 파일에 추가
+<<<<<<< HEAD
     gangwon_hos.to_csv(path + '/pages/Hospital.csv', index=False, encoding='cp949')
 
     # 병원 종류 선택
     plot_label = ['보건소계열', '치과', '일반병원', '한의원/한방병원', '정신병원', '요양병원', '종합병원', '약국']
+=======
+    gangwon_hos.to_csv(path + '\\pages\\Hospital.csv', index=False, encoding='cp949')
+
+    # 병원 종류 선택
+>>>>>>> 06.07
 
     # 사용자에게 입력 받기 위한 폼 생성
     with st.form("select_hospital"):
@@ -106,19 +132,37 @@ def search_hospital():
         const_k = k_hospital[index_hos] # 선택한 병원의 클러스터 수
         st.form_submit_button('탐색하기')
 
+<<<<<<< HEAD
     plot_color = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige']
 
     # 선택한 병원에 대한 클러스터링 결과 가져오기
     df = my_data.get_clustered_data(index_hos)
+=======
+    # 선택한 병원에 대한 클러스터링 결과 가져오기
+    df = my_data.get_clustered_data(index_hos)
+    df['거리(km)'] = haversine(latitude, longitude, df.위도, df.경도).round(2)
+>>>>>>> 06.07
     # get_clustered_data 메서드 호출
     centers = my_data.get_centers(index_hos)
 
     # 병원과 군부대 매칭 후 선택한 군부대와 가장 가까운 마을 중심과 인덱스 가져오기
     closest_town, index_town = matching(centers, army_data_path, index_army)
+<<<<<<< HEAD
 
     matched_cluster = df[df['cluster'] == index_town]
 
     # 매칭된 클러스터에 해당하는 병원 데이터 가져오기
+=======
+    print(closest_town)
+
+    # 추천지수 계산
+    matched_cluster = df[df['cluster'] == index_town]
+    matched_cluster.loc[:, '중심거리(km)'] = haversine(closest_town[1], closest_town[0], matched_cluster.위도, matched_cluster.경도).round(2)
+    matched_cluster.loc[:, '거리 곱'] = (matched_cluster['거리(km)'] * matched_cluster['중심거리(km)'])
+    max = matched_cluster['거리 곱'].max()
+    num_columns = matched_cluster.shape[1]
+    matched_cluster.loc[:, '추천지수'] = ((max - matched_cluster['거리 곱']) / pow(num_columns, 2)).round(2)
+>>>>>>> 06.07
 
     # 지도 생성
     plot_map = folium.Map(location=[latitude, longitude], zoom_start=9)
@@ -131,7 +175,11 @@ def search_hospital():
     #folium.Circle(location=[latitude, longitude], radius=find_radius * 1000, color="#eb9e34", fill_color="red").add_to(plot_map)
 
     # 매칭된 병원 데이터를 지도에 표시
+<<<<<<< HEAD
     sheet_data = matched_cluster[['소재지도로명주소', '의료기관명', '연락처', '거리(km)', '위도', '경도']]
+=======
+    sheet_data = matched_cluster[['소재지도로명주소', '의료기관명', '연락처', '거리(km)', '위도', '경도', '중심거리(km)', '추천지수']]
+>>>>>>> 06.07
     sheet_data = sheet_data[sheet_data['거리(km)'] <= find_radius].reset_index(drop=True)
     for j in range(len(sheet_data)):
                 location = [sheet_data.위도[j], sheet_data.경도[j]]
@@ -143,8 +191,13 @@ def search_hospital():
     # 지도를 Streamlit에서 표시
     st_data = st_folium(plot_map, height=500, width=700)
 
+<<<<<<< HEAD
     # 병원의 정보를 거리순으로 정렬
     sheet_data = sheet_data[['소재지도로명주소', '의료기관명', '연락처', '거리(km)']].sort_values('거리(km)')
+=======
+    # 병원의 정보를 추천순으로 정렬
+    sheet_data = sheet_data[['소재지도로명주소', '의료기관명', '연락처', '추천지수', '거리(km)']].sort_values('추천지수', ascending=False).reset_index(drop=True)
+>>>>>>> 06.07
     # AgGrid를 사용하여 병원의 정보를 표 형태로 표시
     gd = GridOptionsBuilder.from_dataframe(sheet_data)
     gd.configure_selection(selection_mode='single', use_checkbox=True)
@@ -157,13 +210,21 @@ def search_hospital():
         # 네이버 지도 연결
         selected_hos = grid_table.selected_data
         url_name = selected_hos['소재지도로명주소'][0]
+<<<<<<< HEAD
         st.write('### ' + selected_hos['의료기관명'][0])
+=======
+        st.write('### ' + selected_hos['의료기관명'].iloc[0])
+>>>>>>> 06.07
         st.write(url_name)
         encoded_text_mobile = urllib.parse.quote(url_name)
         encoded_text_pc = url_name.replace(' ', '+')
         st.session_state['selected_hos'] = selected_hos
 
+<<<<<<< HEAD
         col1, col2, col3 = st.columns(3)
+=======
+        col1, col2, col3, col4 = st.columns(4)
+>>>>>>> 06.07
         
         with col1:
             st.link_button("네이버 지도로 확인하기(모바일)",
@@ -173,9 +234,23 @@ def search_hospital():
                         "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" + encoded_text_pc)
         with col3:                
             st.page_link('pages/reserve.py', label="예약하기")
+<<<<<<< HEAD
     
     except:
         pass
 
 
 search_hospital()
+=======
+        with col4:
+            st.page_link('pages/bookmark.py', label="즐겨찾기에 추가하기")
+
+
+    except:
+        pass
+
+try:
+    search_hospital()
+except:
+    st.error("병원을 찾는 도중 오류가 발생했습니다. 새로고침을 눌러주세요.")
+>>>>>>> 06.07

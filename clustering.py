@@ -1,12 +1,13 @@
 # 로그인 할 때 클러스터링 진행
 import os
 path = os.getcwd()
+os.environ["OMP_NUM_THREADS"] = "1"
 
 import streamlit as st
 import pandas as pd
 from sklearn.cluster import KMeans
 
-hos_data_path = path + "/pages/Hospital.csv"
+hos_data_path = path + "\\pages\\Hospital.csv"
 
 @st.cache_data
 def load_hospital_data(hos_data_path):
@@ -39,7 +40,7 @@ class Clustering:
         X = data[['경도', '위도']].values
 
         # KMeans 모델 생성 및 군집화 수행
-        __kmeans = KMeans(n_clusters=num_clusters, random_state=0)
+        __kmeans = KMeans(n_clusters=num_clusters, random_state=0, n_init=10)
         data['cluster'] = __kmeans.fit_predict(X)
 
         # 각 클러슽터의 중심 위치를 반환
@@ -54,10 +55,18 @@ class Clustering:
         return 
 
     def get_clustered_data(self, index_hos):
-        self.__df = self.__plot_data[index_hos][['소재지도로명주소', '의료기관명', '연락처', '거리(km)', '위도', '경도', 'cluster']]
-        return self.__df
+        return self.__plot_data[index_hos][['소재지도로명주소', '의료기관명', '연락처', '거리(km)', '위도', '경도', 'cluster']]
     
     def get_centers(self, index_hos):
-        self.__df = self.__centers[index_hos]
-        return self.__df
-
+        return self.__centers[index_hos]
+    
+    def get_k(self, index_hos):
+        return self.__k_hospital[index_hos]
+    
+    def save_clustered_data(self, hos_index):
+        data = []
+        for i in range(self.__k_hospital[hos_index]):
+            cluster_df = self.__plot_data[hos_index][self.__plot_data[hos_index]['cluster'] == i]
+            data.append(cluster_df)
+            #cluster_df.to_csv(f"pages/admin/cluster_{i}.csv", index=False, encoding='cp949')
+        return data
