@@ -3,15 +3,10 @@ import streamlit_shadcn_ui as ui
 from local_components import card_container
 import pandas as pd
 from menu import menu_with_redirect
-<<<<<<< HEAD
-
-menu_with_redirect()
-=======
 from advertise import advertise
 
 menu_with_redirect()
 advertise()
->>>>>>> 06.07
 
 st.markdown('''
 <style>
